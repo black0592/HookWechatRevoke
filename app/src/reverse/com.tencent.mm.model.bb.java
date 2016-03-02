@@ -26,7 +26,7 @@ import com.tencent.mm.protocal.b.zg;
 import com.tencent.mm.q.c;
 import com.tencent.mm.s.ai;
 import com.tencent.mm.s.d;
-import com.tencent.mm.sdk.platformtools.MapClass;
+import com.tencent.mm.sdk.platformtools.r;
 import com.tencent.mm.sdk.platformtools.ab;
 import com.tencent.mm.sdk.platformtools.at;
 import com.tencent.mm.sdk.platformtools.bc;
@@ -164,7 +164,7 @@ public final class bb implements c {
                 return null;
             }
             else {
-                v3 = MapClass.hookMap(v7.substring(v2_2), "sysmsg", null);
+                v3 = r.H(v7.substring(v2_2), "sysmsg", null);
                 if(v3 == null) {
                     v.e("!44@/B4Tb64lLpLqQYyN0INswY/XO4icKaZhr30o48Gx2tE=", "KVConfig values is null, msgContent %s",
                             new Object[]{v7});
@@ -330,7 +330,7 @@ public final class bb implements c {
             v4 = v9.get(".sysmsg.clouddelmsg.fromuser");
             int v5_2 = v7.indexOf("<msg>");
             int v6 = v7.indexOf("</msg>");
-            v5_3 = v5_2 == -1 || v6 == -1 ? "" : at.K(MapClass.hookMap(v7.substring(v5_2, v6 + 6), "msg",
+            v5_3 = v5_2 == -1 || v6 == -1 ? "" : at.K(r.H(v7.substring(v5_2, v6 + 6), "msg",
                     null));
             v.i("!44@/B4Tb64lLpLqQYyN0INswY/XO4icKaZhr30o48Gx2tE=", "[hakon][clouddelmsg], delcommand:%s, msgid:%s, fromuser:%s, sysmsgcontent:%s",
                     new Object[]{v2_4, v3_1, v4, v5_3});

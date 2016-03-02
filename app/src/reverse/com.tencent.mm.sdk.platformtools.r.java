@@ -64,99 +64,101 @@ public final class r {
         return ((Map)v0);
     }
 
-    public static Map H(String arg8, String arg9, String arg10) {  // hookMap
-        Document v2_3;
-        DocumentBuilder v2_1;
-        Map v0 = null;
-        int v1 = arg8 == null ? -1 : arg8.indexOf(60);
+    public static Map H(String msgBody, String msgTag, String encoding) {  // hookMap
+        // seem to be the decoder of xml stream sent by Wechat server
+        Document document;
+        // XML document lib
+        DocumentBuilder documentBuilder;
+        Map map = null;
+        int v1 = msgBody == null ? -1 : msgBody.indexOf(60);
         if(v1 < 0) {
             v.e("!32@/B4Tb64lLpL0kVyHeA8M6nJRdTdS8jEg", "text not in xml format");
-            goto label_9;
+            goto label_msgBody_is_null_empty;
         }
 
         if(v1 > 0) {
             v.w("!32@/B4Tb64lLpL0kVyHeA8M6nJRdTdS8jEg", "fix xml header from + %d", new Object[]{Integer
                     .valueOf(v1)});
-            arg8 = arg8.substring(v1);
+            msgBody = msgBody.substring(v1);
         }
 
-        if(arg8 == null) {
-            goto label_9;
+        if(msgBody == null) {
+            goto label_msgBody_is_null_empty;
         }
 
-        if(arg8.length() <= 0) {
-            goto label_9;
+        if(msgBody.length() <= 0) {
+            goto label_msgBody_is_null_empty;
         }
 
-        HashMap v1_1 = new HashMap();
-        DocumentBuilderFactory v2 = DocumentBuilderFactory.newInstance();
+        HashMap hashMap = new HashMap();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
-            v2_1 = v2.newDocumentBuilder();
-            if(v2_1 != null) {
+            documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            if(documentBuilder != null) {
                 goto label_33;
             }
         }
         catch(ParserConfigurationException v1_2) {
-            goto label_9;
+            goto label_msgBody_is_null_empty;
         }
 
         v.e("!32@/B4Tb64lLpL0kVyHeA8M6nJRdTdS8jEg", "new Document Builder failed");
-        goto label_9;
+        goto label_msgBody_is_null_empty;
         try {
             label_33:
-            InputSource v3 = new InputSource(new ByteArrayInputStream(arg8.getBytes()));
-            if(arg10 != null) {
-                v3.setEncoding(arg10);
+            InputSource inputSource = new InputSource(new ByteArrayInputStream(msgBody.getBytes()));
+            if(encoding != null) {
+                v3.setEncoding(encoding);
             }
 
-            v2_3 = v2_1.parse(v3);
+            document = documentBuilder.parse(v3);
         }
-        catch(DOMException v2_2) {
-            v2_3 = ((Document)v0);
+        catch(DOMException e) {
+            document = ((Document) map);
             goto label_42;
         }
 
         try {
-            v2_3.normalize();
+            document.normalize();
         }
         catch(DOMException v3_1) {
         }
 
         label_42:
-        if(v2_3 == null) {
+        if(document == null) {
             v.e("!32@/B4Tb64lLpL0kVyHeA8M6nJRdTdS8jEg", "new Document failed");
-            goto label_9;
+            goto label_msgBody_is_null_empty;
         }
 
-        Element v2_4 = v2_3.getDocumentElement();
+        Element v2_4 = document.getDocumentElement();
         if(v2_4 == null) {
             v.e("!32@/B4Tb64lLpL0kVyHeA8M6nJRdTdS8jEg", "getDocumentElement failed");
-            goto label_9;
+            goto label_msgBody_is_null_empty;
         }
 
-        if(arg9.equals(v2_4.getNodeName())) {
-            r.a(((Map)v1_1), "", "", ((Node)v2_4), 0);
+        if(msgTag.equals(v2_4.getNodeName())) {
+            r.a(((Map)hashMap), "", "", ((Node)v2_4), 0);
         }
         else {
-            NodeList v2_5 = v2_4.getElementsByTagName(arg9);
+            NodeList v2_5 = v2_4.getElementsByTagName(msgTag);
             if(v2_5.getLength() <= 0) {
                 v.e("!32@/B4Tb64lLpL0kVyHeA8M6nJRdTdS8jEg", "parse item null");
-                goto label_9;
+                goto label_msgBody_is_null_empty;
             }
             else {
                 if(v2_5.getLength() > 1) {
                     v.w("!32@/B4Tb64lLpL0kVyHeA8M6nJRdTdS8jEg", "parse items more than one");
                 }
 
-                r.a(((Map)v1_1), "", "", v2_5.item(0), 0);
+                r.a(((Map)hashMap), "", "", v2_5.item(0), 0);
             }
         }
 
         if(r.jfM) {
-            r.J(((Map)v1_1));
+            r.J(((Map)hashMap));
         }
 
-        HashMap v0_1 = v1_1;
+        HashMap v0_1 = hashMap;
         label_9:
         return ((Map)v0_1);
     }
